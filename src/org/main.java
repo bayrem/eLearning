@@ -17,7 +17,7 @@ public class main {
     public static void main(String[] args) {
         // TODO code application logic here
         //new accueil().setVisible(true);
-        new SqliteJDBC().connecter();
+        new SqliteJDBC().select_cycle();
     }
     
 }

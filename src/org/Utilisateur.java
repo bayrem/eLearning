@@ -25,7 +25,12 @@ public class Utilisateur {
         this.pays = pays;
         this.pseudo = pseudo;
         this.mdp = mdp;
-      
+        
+    }
+    
+    public void creer_utilisateur()
+    {
+        new SqliteJDBC().creer_utilisateur(this);
     }
 
     public String getNom() {
