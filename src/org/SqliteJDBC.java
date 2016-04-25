@@ -61,11 +61,13 @@ public class SqliteJDBC {
     {
         Connection c = connecter();
         Statement stmt = null;
+        int type_id, niveau_id, cycle_id;
         try {
 
             stmt = c.createStatement();
-            String sql = "INSERT INTO Utilisateur (utilisateur_id,Nom,Prenom,date_de_naissance,cin_passport,cycle_id,sexe_id,niveau_id,pays_id,pseudo,mdp,group_id,type_id) " +
-                         "VALUES (1, 'Paul', 32, 'California', 20000.00 );"; 
+            String sql = "INSERT INTO Utilisateur (Nom,Prenom,date_de_naissance,cin_passport,cycle_id,sexe_id,niveau_id,pays_id,pseudo,mdp,type_id) " +
+                         "VALUES (" + u.getNom() + "," + u.getPrenom()+ "," + u.getDateDeNaissance() + "," + u.getCin_passport()+ "," + u.getCycle_id()+ ","  + u.getNiveau_id()+ ","  
+                    + u.getPays()+ ","  + u.getPseudo()+ ","  + u.getMdp()+ ","  + u.getType_id()+ ");"; 
             stmt.executeUpdate(sql);
 
             stmt.close();

@@ -10,21 +10,25 @@ import java.util.*;
  * @author jridi
  */
 public class Utilisateur {
-    private String nom,prenom,pays,niveau_etude,mdp,pseudo,cin_passport,sexe,profession;
+    private String nom,prenom,pays,mdp,pseudo,cin_passport,sexe;
     private Date date_naissance;
+    private int niveau_id,type_id,cycle_id;
 
 
-    public Utilisateur(String nom, String prenom, Date date_naissance, String cin_passport, String niveau_etude, String sexe, String profession, String pays, String pseudo, String mdp) {
+    public Utilisateur(String nom, String prenom, Date date_naissance, String cin_passport, int cycle_id, int niveau_id, String sexe, String pays, String pseudo, String mdp, int type_id) 
+    {
         this.nom = nom;
         this.prenom = prenom;
         this.date_naissance = date_naissance;
         this.cin_passport = cin_passport;
-        this.niveau_etude = niveau_etude;
+        this.cycle_id = cycle_id;
+        this.niveau_id = niveau_id;
         this.sexe = sexe;
-        this.profession = profession;
         this.pays = pays;
         this.pseudo = pseudo;
         this.mdp = mdp;
+        this.type_id = type_id;
+        
         
     }
     
@@ -32,7 +36,12 @@ public class Utilisateur {
     {
         new SqliteJDBC().creer_utilisateur(this);
     }
+    
+    public void modifierEtudiant(){
 
+    
+    }
+    
     public String getNom() {
         return nom;
     }
@@ -56,14 +65,6 @@ public class Utilisateur {
 
     public void setPays(String pays) {
         this.pays = pays;
-    }
-
-    public String getNiveau_etude() {
-        return niveau_etude;
-    }
-
-    public void setNiveau_etude(String niveau_etude) {
-        this.niveau_etude = niveau_etude;
     }
 
     public String getMdp() {
@@ -98,29 +99,45 @@ public class Utilisateur {
         this.sexe = sexe;
     }
 
-    public String getProfession() {
-        return profession;
+    public Date getDateDeNaissance()
+    {
+        return date_naissance;
+    }
+    
+    public void setDateDeNaissance(Date date)
+    {
+        this.date_naissance = date;
+    }
+    
+    public int getType_id() {
+        return type_id;
     }
 
-    public void setProfession(String profession) {
-        this.profession = profession;
+    public void setType_id() {
+        
+        this.type_id = type_id;
+    }
+    
+    public int getNiveau_id() {
+        return niveau_id;
     }
 
+    public void setNiveau_id(int niveau_id) {
+        this.niveau_id = niveau_id;
+    }
 
+    public int getCycle_id() {
+        return cycle_id;
+    }
+
+    public void setCycle_id(int cycle_id) {
+        this.cycle_id = cycle_id;
+    }
  
     @Override
     public int hashCode() {
         int hash = 7;
         return hash;
-    }
-
-public  boolean equals ( Object e1) {
-		return false;	
-			}
-
-    @Override
-    public String toString() {
-        return "Etudiant{" + "nom=" + nom + ", prenom=" + prenom + ", date de naissance =" + date_naissance + ", pays=" + pays + ", niveau_etude=" + niveau_etude + ", mdp=" + mdp + ", pseudo=" + pseudo + ", cin_passport=" + cin_passport + ", sexe=" + sexe + ", profession=" + profession +  '}';
     }
     
     
@@ -132,57 +149,12 @@ public  boolean equals ( Object e1) {
 		System.out.println( prenom ) ;
                 System.out.println( date_naissance ) ;
                 System.out.println( cin_passport ) ;
-                System.out.println(  niveau_etude ) ;
+                System.out.println(  niveau_id ) ;
                 System.out.println( sexe ) ;        
-		System.out.println( profession ) ;
                 System.out.println( pays ) ;
                 System.out.println( pseudo ) ;
                 System.out.println( mdp ) ;
 		
 	}
-    
-    
-    public void modifierEtudiant(String nomnv, String prenomnv, int journv, int moisnv, int anneenv, String cin_passportnv, String niveau_etudenv, String sexenv, String professionnv, String paysnv, String pseudonv, String mdpnv){
-  
-        
-         Scanner s = new Scanner(System.in) ; 
-		 @SuppressWarnings("resource")
-		 Scanner s1 = new Scanner(System.in) ; 
-
-		 	       if((this.cin_passport.equals(cin_passport)))
-		 	     {     this.nom = nomnv;
-                                   this.prenom = prenomnv;                               
-                                   this.cin_passport = cin_passportnv;
-                                   this.niveau_etude = niveau_etudenv;
-                                   this.sexe = sexenv;
-                                   this.profession = professionnv;
-                                   this.pays = paysnv;
-                                   this.pseudo = pseudonv;
-                                   this.mdp = mdpnv; 
-                             }
-    
-    
-    
-    }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+       
 }
