@@ -17,7 +17,7 @@ public class SqliteJDBC {
     public SqliteJDBC(){
     }
     
-    public Connection connecter()
+    public static Connection connecter()
     {
         Connection c = null;
     try {
@@ -57,28 +57,31 @@ public class SqliteJDBC {
         System.out.println("Operation done successfully");
     }
     
-    public void creer_utilisateur(Utilisateur u)
+    public void select_niveau()
     {
         Connection c = connecter();
         Statement stmt = null;
-        int type_id, niveau_id, cycle_id;
-        try {
-
+        try 
+        {
             stmt = c.createStatement();
-            String sql = "INSERT INTO Utilisateur (Nom,Prenom,date_de_naissance,cin_passport,cycle_id,sexe_id,niveau_id,pays_id,pseudo,mdp,type_id) " +
-                         "VALUES (" + u.getNom() + "," + u.getPrenom()+ "," + u.getDateDeNaissance() + "," + u.getCin_passport()+ "," + u.getCycle_id()+ ","  + u.getNiveau_id()+ ","  
-                    + u.getPays()+ ","  + u.getPseudo()+ ","  + u.getMdp()+ ","  + u.getType_id()+ ");"; 
-            stmt.executeUpdate(sql);
-
+            ResultSet rs = stmt.executeQuery( "SELECT * FROM Niveau;" );
+            while ( rs.next() ) {
+                int id = rs.getInt("niveau_id");
+                String  name = rs.getString("niveau");
+                System.out.println(id + name);
+            }
+            rs.close();
             stmt.close();
-            c.commit();
             c.close();
         } 
-        catch ( Exception e ) {
+        catch ( Exception e ) 
+        {
             System.err.println( e.getClass().getName() + ": " + e.getMessage() );
             System.exit(0);
         }
-        System.out.println("Records created successfully");
+        System.out.println("Operation done successfully");
     }
+    
+    
     
 }

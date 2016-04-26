@@ -251,7 +251,6 @@ public class accueil extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(java.awt.Color.white);
         setName("accueil"); // NOI18N
-        setResizable(false);
 
         jLabel1.setBackground(new java.awt.Color(255, 255, 255));
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/logoe.jpg"))); // NOI18N
@@ -389,9 +388,10 @@ public class accueil extends javax.swing.JFrame {
                             .addComponent(jLabel9)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)))
                     .addGroup(jPanel5Layout.createSequentialGroup()
-                        .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(24, 24, 24))
-                    .addComponent(jLabel8))
+                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel8))
+                        .addGap(24, 24, 24)))
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel5Layout.createSequentialGroup()
                         .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -588,9 +588,8 @@ public class accueil extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addComponent(jPanel6, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jPanel7, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(11, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -599,9 +598,9 @@ public class accueil extends javax.swing.JFrame {
                 .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 47, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
                 .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(51, 51, 51))
+                .addContainerGap(80, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Iinscription", jPanel1);
@@ -1465,7 +1464,7 @@ public class accueil extends javax.swing.JFrame {
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
         // TODO add your handling code here:
         // Code pour enregister les donndee d'inscription
-        String nom = jTextField2.getText(),prenom = jTextField4.getText(),pays = null,mdp = jPasswordField1.getText(),pseudo = jTextField1.getText(),cin_passport = jTextField5.getText(),sexe = null,cycle = null, profession = null;
+        String nom = jTextField2.getText(),prenom = jTextField4.getText(),pays = null,mdp = jPasswordField1.getText(),pseudo = jTextField1.getText(),cin_passport = jTextField5.getText(),sexe = null,cycle = null;
         String d2n = jTextField10.getText() + "-" + jTextField11.getText() + "-" + jTextField12.getText();
         DateFormat format = new SimpleDateFormat("dd-MM-YYYY");
         Date date_naissance = null;
@@ -1474,7 +1473,7 @@ public class accueil extends javax.swing.JFrame {
         } catch (ParseException ex) {
             Logger.getLogger(accueil.class.getName()).log(Level.SEVERE, null, ex);
         }
-        int niveau_id = 0,type_id = 0;
+        int niveau_id = 0,type_id = 0, cycle_id =0;
         
         if(jRadioButton1.isSelected())
         {
@@ -1496,19 +1495,28 @@ public class accueil extends javax.swing.JFrame {
         else if (jRadioButton5.isSelected())
         {
             type_id = 1;
-            cycle = jComboBox4.getSelectedItem().toString();
             niveau_id = (int) jComboBox5.getSelectedItem();
+            cycle = jComboBox4.getSelectedItem().toString();
+            if (cycle == "Licence")
+            {
+                 cycle_id = 1;
+            }else 
+            {
+                 cycle_id = 2;
+            }
+            
         }
         
         Utilisateur u;
-        u = new Utilisateur(nom, prenom, date_naissance, cin_passport, type_id, niveau_id, sexe, pays, pseudo, mdp, type_id);
+        u = new Utilisateur(nom, prenom, date_naissance, cin_passport, cycle_id, niveau_id, sexe, pays, pseudo, mdp, type_id);
         
-        jPanel7.setVisible(false);
+        /*jPanel7.setVisible(false);
         jPanel5.setVisible(false);
         panel3.setVisible(false);
         panel8.setVisible(true);
         jPanel6.setVisible(true);
-        jTabbedPane2.setVisible(true);
+        jTabbedPane2.setVisible(true);*/
+        u.afficherUtilisateur();
       
         //Code pour afficher la fenetre de message
         JFrame jFrame = new JFrame();

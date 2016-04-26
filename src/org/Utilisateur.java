@@ -4,6 +4,8 @@
  * and open the template in the editor.
  */
 package org;
+import java.sql.Connection;
+import java.sql.Statement;
 import java.util.*;
 /**
  *
@@ -32,9 +34,28 @@ public class Utilisateur {
         
     }
     
-    public void creer_utilisateur()
+    public void creer_utilisateur(Utilisateur u)
     {
-        new SqliteJDBC().creer_utilisateur(this);
+        Connection c = SqliteJDBC.connecter();
+        Statement stmt = null;
+        int type_id, niveau_id, cycle_id;
+        try {
+
+            stmt = c.createStatement();
+            String sql = "INSERT INTO Utilisateur (Nom,Prenom,date_de_naissance,cin_passport,cycle_id,sexe_id,niveau_id,pays_id,pseudo,mdp,type_id) " +
+                         "VALUES (" + u.getNom() + "," + u.getPrenom()+ "," + u.getDateDeNaissance() + "," + u.getCin_passport()+ "," + u.getCycle_id()+ ","  + u.getNiveau_id()+ ","  
+                    + u.getPays()+ ","  + u.getPseudo()+ ","  + u.getMdp()+ ","  + u.getType_id()+ ");"; 
+            stmt.executeUpdate(sql);
+
+            stmt.close();
+            c.commit();
+            c.close();
+        } 
+        catch ( Exception e ) {
+            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+            System.exit(0);
+        }
+        System.out.println("Records created successfully");
     }
     
     public void modifierEtudiant(){
@@ -143,18 +164,19 @@ public class Utilisateur {
     
     
     
-    public void afficheretudiant()
+    public void afficherUtilisateur()
 	{
 		System.out.println( nom ) ; 
 		System.out.println( prenom ) ;
                 System.out.println( date_naissance ) ;
                 System.out.println( cin_passport ) ;
+                System.out.println( cycle_id ) ;
                 System.out.println(  niveau_id ) ;
                 System.out.println( sexe ) ;        
                 System.out.println( pays ) ;
                 System.out.println( pseudo ) ;
                 System.out.println( mdp ) ;
-		
+		System.out.println( type_id ) ;
 	}
        
 }
