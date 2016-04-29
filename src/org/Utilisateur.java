@@ -6,45 +6,75 @@
 package org;
 import java.sql.Connection;
 import java.sql.Statement;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 /**
  *
  * @author jridi
  */
 public class Utilisateur {
-    private String nom,prenom,pays,mdp,pseudo,cin_passport,sexe;
-    private Date date_naissance;
+    private String nom,prenom,pays,mdp,pseudo,cin_passport,sexe,date_naissance;
     private int niveau_id,type_id,cycle_id;
 
 
-    public Utilisateur(String nom, String prenom, Date date_naissance, String cin_passport, int cycle_id, int niveau_id, String sexe, String pays, String pseudo, String mdp, int type_id) 
+    Utilisateur(String nom, String prenom, String d2n, String cin_passport, String cycle, String niveau, String sexe, String pays, String pseudo, String mdp, String type)
     {
         this.nom = nom;
         this.prenom = prenom;
-        this.date_naissance = date_naissance;
+        this.date_naissance = d2n;
         this.cin_passport = cin_passport;
-        this.cycle_id = cycle_id;
-        this.niveau_id = niveau_id;
+        if (cycle.equals(""))
+        {
+            this.cycle_id = 0;
+        } else if (cycle.equals("Licence"))
+        {
+            this.cycle_id = 1;
+        } else 
+        {
+            this.cycle_id = 2;
+        }
+        if (niveau.equals(""))
+        {
+            this.niveau_id = 0;
+        } else if (niveau.equals("1"))
+        {
+            this.niveau_id = 1;
+        }else if (niveau.equals("2"))
+        {
+            this.niveau_id = 2;
+        } else 
+        {
+            this.niveau_id = 3;
+        }
         this.sexe = sexe;
         this.pays = pays;
         this.pseudo = pseudo;
         this.mdp = mdp;
-        this.type_id = type_id;
-        
+        if (type.equals("1"))
+        {
+            this.niveau_id = 1;
+        } else 
+        {
+            this.niveau_id = 2;
+        }
         
     }
+
     
     public void creer_utilisateur(Utilisateur u)
     {
         Connection c = SqliteJDBC.connecter();
         Statement stmt = null;
-        int type_id, niveau_id, cycle_id;
         try {
 
             stmt = c.createStatement();
             String sql = "INSERT INTO Utilisateur (Nom,Prenom,date_de_naissance,cin_passport,cycle_id,sexe_id,niveau_id,pays_id,pseudo,mdp,type_id) " +
-                         "VALUES (" + u.getNom() + "," + u.getPrenom()+ "," + u.getDateDeNaissance() + "," + u.getCin_passport()+ "," + u.getCycle_id()+ ","  + u.getNiveau_id()+ ","  
-                    + u.getPays()+ ","  + u.getPseudo()+ ","  + u.getMdp()+ ","  + u.getType_id()+ ");"; 
+                         "VALUES (" + this.nom + "," + this.prenom+ "," + this.date_naissance + "," + this.cin_passport + "," + this.cycle_id + ","  + this.niveau_id + ","  
+                    + this.pays + ","  + this.pseudo + ","  + this.mdp + ","  + this.type_id + ");"; 
             stmt.executeUpdate(sql);
 
             stmt.close();
@@ -120,12 +150,12 @@ public class Utilisateur {
         this.sexe = sexe;
     }
 
-    public Date getDateDeNaissance()
+    public String getDateDeNaissance()
     {
         return date_naissance;
     }
     
-    public void setDateDeNaissance(Date date)
+    public void setDateDeNaissance(String date)
     {
         this.date_naissance = date;
     }

@@ -1464,16 +1464,8 @@ public class accueil extends javax.swing.JFrame {
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
         // TODO add your handling code here:
         // Code pour enregister les donndee d'inscription
-        String nom = jTextField2.getText(),prenom = jTextField4.getText(),pays = null,mdp = jPasswordField1.getText(),pseudo = jTextField1.getText(),cin_passport = jTextField5.getText(),sexe = null,cycle = null;
+        String nom = jTextField2.getText(),prenom = jTextField4.getText(),pays = "",mdp = jPasswordField1.getPassword().toString(),pseudo = jTextField1.getText(),cin_passport = jTextField5.getText(),sexe = "",cycle = "", niveau = "", type = "";
         String d2n = jTextField10.getText() + "-" + jTextField11.getText() + "-" + jTextField12.getText();
-        DateFormat format = new SimpleDateFormat("dd-MM-YYYY");
-        Date date_naissance = null;
-        try {
-            date_naissance = format.parse(d2n);
-        } catch (ParseException ex) {
-            Logger.getLogger(accueil.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        int niveau_id = 0,type_id = 0, cycle_id =0;
         
         if(jRadioButton1.isSelected())
         {
@@ -1490,25 +1482,18 @@ public class accueil extends javax.swing.JFrame {
         
         if(jRadioButton4.isSelected())
         {
-            type_id = 2;
+            type = "2";
         }
         else if (jRadioButton5.isSelected())
         {
-            type_id = 1;
-            niveau_id = (int) jComboBox5.getSelectedItem();
+            type = "1";
+            niveau = jComboBox3.getSelectedItem().toString();
             cycle = jComboBox4.getSelectedItem().toString();
-            if (cycle == "Licence")
-            {
-                 cycle_id = 1;
-            }else 
-            {
-                 cycle_id = 2;
-            }
             
         }
         
         Utilisateur u;
-        u = new Utilisateur(nom, prenom, date_naissance, cin_passport, cycle_id, niveau_id, sexe, pays, pseudo, mdp, type_id);
+        u = new Utilisateur(nom, prenom, d2n, cin_passport, cycle, niveau, sexe, pays, pseudo, mdp, type);
         
         /*jPanel7.setVisible(false);
         jPanel5.setVisible(false);
