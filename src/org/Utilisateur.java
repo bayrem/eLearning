@@ -5,6 +5,7 @@
  */
 package org;
 import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.Statement;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -17,10 +18,25 @@ import java.util.logging.Logger;
  * @author jridi
  */
 public class Utilisateur {
-    private String nom,prenom,pays,mdp,pseudo,cin_passport,sexe,date_naissance;
-    private int niveau_id,type_id,cycle_id;
+    private String nom,prenom,mdp,pseudo,cin_passport,date_naissance;
+    private int niveau_id,type_id,cycle_id,sexe_id,pay_id;
 
+    public Utilisateur(String nom, String prenom, String mdp, String pseudo, String cin_passport, String date_naissance, int niveau_id, int type_id, int cycle_id, int sexe_id, int pay_id) {
+        this.nom = nom;
+        this.prenom = prenom;
+        this.mdp = mdp;
+        this.pseudo = pseudo;
+        this.cin_passport = cin_passport;
+        this.date_naissance = date_naissance;
+        this.niveau_id = niveau_id;
+        this.type_id = type_id;
+        this.cycle_id = cycle_id;
+        this.sexe_id = sexe_id;
+        this.pay_id = pay_id;
+    }
 
+    
+    
     Utilisateur(String nom, String prenom, String d2n, String cin_passport, String cycle, String niveau, String sexe, String pays, String pseudo, String mdp, String type)
     {
         this.nom = nom;
@@ -50,22 +66,33 @@ public class Utilisateur {
         {
             this.niveau_id = 3;
         }
-        this.sexe = sexe;
-        this.pays = pays;
+        if (sexe.equals("0"))
+        {
+            this.sexe_id = 0;
+        } else if (sexe.equals("1"))
+        {
+            this.sexe_id = 1;
+        } else 
+        {
+            this.sexe_id = 2;
+        }
+        this.pay_id = Pays.getPays_id(pays);
         this.pseudo = pseudo;
         this.mdp = mdp;
         if (type.equals("1"))
         {
             this.niveau_id = 1;
+            this.type_id = 1;
         } else 
         {
             this.niveau_id = 2;
+            this.type_id = 2;
         }
         
     }
 
     
-    public void creer_utilisateur(Utilisateur u)
+    public void creer_utilisateur()
     {
         Connection c = SqliteJDBC.connecter();
         Statement stmt = null;
@@ -73,8 +100,9 @@ public class Utilisateur {
 
             stmt = c.createStatement();
             String sql = "INSERT INTO Utilisateur (Nom,Prenom,date_de_naissance,cin_passport,cycle_id,sexe_id,niveau_id,pays_id,pseudo,mdp,type_id) " +
-                         "VALUES (" + this.nom + "," + this.prenom+ "," + this.date_naissance + "," + this.cin_passport + "," + this.cycle_id + ","  + this.niveau_id + ","  
-                    + this.pays + ","  + this.pseudo + ","  + this.mdp + ","  + this.type_id + ");"; 
+                         "VALUES ( \"" + this.nom + "\",\"" + this.prenom+ "\",\"" + this.date_naissance + "\",\"" + this.cin_passport + "\"," + this.cycle_id +    
+                         ","  + this.sexe_id + ","  + this.niveau_id + ",\"" + this.pay_id + "\",\""  + this.pseudo + "\",\""  + this.mdp + "\","  + this.type_id + ");"; 
+            c.setAutoCommit(false);
             stmt.executeUpdate(sql);
 
             stmt.close();
@@ -91,6 +119,56 @@ public class Utilisateur {
     public void modifierEtudiant(){
 
     
+    }
+    
+    public static boolean identified(String pseudo, String mdp)
+    {
+        boolean identified = false;
+        Connection c = SqliteJDBC.connecter();
+        Statement stmt = null;
+        try 
+        {
+            stmt = c.createStatement();
+            ResultSet rs = stmt.executeQuery( "SELECT * FROM Utilisateur where pseudo = \"" + 
+                    pseudo +"\" AND mdp = \"" + mdp + "\";" );
+            while ( rs.next() ) {
+                identified = true;
+            }
+            rs.close();
+            stmt.close();
+            c.close();
+        } 
+        catch ( Exception e ) 
+        {
+            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+            System.exit(0);
+        }
+        return identified;
+    }
+    
+    public static Utilisateur getUtilisateur(String pseudo, String mdp)
+    {
+        Utilisateur u = null;
+        Connection c = SqliteJDBC.connecter();
+        Statement stmt = null;
+        try 
+        {
+            stmt = c.createStatement();
+            ResultSet rs = stmt.executeQuery( "SELECT * FROM Utilisateur where pseudo = \"" + 
+                    pseudo +"\" AND mdp = \"" + mdp + "\";" );
+            while ( rs.next() ) {
+                u = new Utilisateur(rs.getString("Nom"), rs.getString("Prenom"), rs.getString("mdp"), rs.getString("pseudo"),rs.getString("cin_passport"), rs.getString("date_de_naissance"), rs.getInt("niveau_id"), rs.getInt("type_id"), rs.getInt("cycle_id"), rs.getInt("sexe_id"),rs.getInt("pays_id"));
+            }
+            rs.close();
+            stmt.close();
+            c.close();
+        } 
+        catch ( Exception e ) 
+        {
+            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+            System.exit(0);
+        }
+        return u;
     }
     
     public String getNom() {
@@ -110,13 +188,15 @@ public class Utilisateur {
     }
 
 
-    public String getPays() {
-        return pays;
+    public int getPay_id() {
+        return pay_id;
     }
 
-    public void setPays(String pays) {
-        this.pays = pays;
+    public void setPay_id(int pay_id) {
+        this.pay_id = pay_id;
     }
+    
+    
 
     public String getMdp() {
         return mdp;
@@ -142,12 +222,12 @@ public class Utilisateur {
         this.cin_passport = cin_passport;
     }
 
-    public String getSexe() {
-        return sexe;
+    public int getSexe_id() {
+        return sexe_id;
     }
 
-    public void setSexe(String sexe) {
-        this.sexe = sexe;
+    public void setSexe_id(int sexe_id) {
+        this.sexe_id = sexe_id;
     }
 
     public String getDateDeNaissance()
@@ -164,7 +244,7 @@ public class Utilisateur {
         return type_id;
     }
 
-    public void setType_id() {
+    public void setType_id(int type_id) {
         
         this.type_id = type_id;
     }
@@ -202,8 +282,8 @@ public class Utilisateur {
                 System.out.println( cin_passport ) ;
                 System.out.println( cycle_id ) ;
                 System.out.println(  niveau_id ) ;
-                System.out.println( sexe ) ;        
-                System.out.println( pays ) ;
+                System.out.println( sexe_id ) ;        
+                System.out.println( pay_id ) ;
                 System.out.println( pseudo ) ;
                 System.out.println( mdp ) ;
 		System.out.println( type_id ) ;

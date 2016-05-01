@@ -16,8 +16,8 @@ public class main {
      */
     public static void main(String[] args) {
         // TODO code application logic here
-        new accueil().setVisible(true);
-        //new SqliteJDBC().select_cycle();
+        //new accueil().setVisible(true);
+        
     }
     
 }
